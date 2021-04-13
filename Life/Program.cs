@@ -145,8 +145,55 @@ namespace cli_life
         {
             using (StreamReader r = new StreamReader("json_file.json"))
             {
-                string json = r.ReadToEnd();
-                Item items = JsonConvert.DeserializeObject<Item>(json);
+                Item items = new Item();
+                string str = r.ReadToEnd();
+                string tmp_str = "";
+                int i = 0;
+                while (str[i] != ':') i++;
+                i++;
+                while (str[i] != ',')
+                {
+                    tmp_str = tmp_str + str[i];
+                    i++;
+                }
+                items.width = Int32.Parse(tmp_str);
+                while (str[i] != ':') i++;
+                i++;
+                tmp_str = "";
+                while (str[i] != ',')
+                {
+                    tmp_str = tmp_str + str[i];
+                    i++;
+                }
+                items.height = Int32.Parse(tmp_str);
+                while (str[i] != ':') i++;
+                i++;
+                tmp_str = "";
+                while (str[i] != ',')
+                {
+                    tmp_str = tmp_str + str[i];
+                    i++;
+                }
+                items.cellSize = Int32.Parse(tmp_str);
+                while (str[i] != ':') i++;
+                i++;
+                tmp_str = "";
+                while (str[i] != '.')
+                {
+                    tmp_str = tmp_str + str[i];
+                    i++;
+                }
+                i++;
+                items.liveDensity = Int32.Parse(tmp_str);
+                tmp_str = "";
+                while (str[i] != '\r')
+                {
+                    tmp_str = tmp_str + str[i];
+                    i++;
+                }
+                int st = 1;
+                for (int j = 0; j < tmp_str.Length; j++) st = st * 10;
+                items.liveDensity = items.liveDensity + (float)Int32.Parse(tmp_str) / st;
                 board = new Board(
                     val,
                     width: items.width,
